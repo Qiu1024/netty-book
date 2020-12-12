@@ -21,6 +21,7 @@ import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 /**
@@ -52,6 +53,11 @@ public class TimeClientHandler extends ChannelHandlerAdapter {
             message = Unpooled.buffer(req.length);
             message.writeBytes(req);
             ctx.writeAndFlush(message);
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

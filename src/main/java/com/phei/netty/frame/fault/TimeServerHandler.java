@@ -35,6 +35,9 @@ public class TimeServerHandler extends ChannelHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg)
             throws Exception {
         ByteBuf buf = (ByteBuf) msg;
+        System.out.println("服务器端可读字节数：" + buf.readableBytes());
+        //之所以会粘包的原因是 com.phei.netty.frame.fault.TimeClientHandler.channelActive 发数据的速度快导致的
+        //发送数据快，这边一次读取到的字节数据就变大了。也就是发生了粘包！
         byte[] req = new byte[buf.readableBytes()];
         buf.readBytes(req);
         String body = new String(req, StandardCharsets.UTF_8).substring(0, req.length
